@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Todos from "./components/Todos";
 
 const todoData = [
   {
@@ -21,14 +22,10 @@ const todoData = [
 export default function App() {
   const [todos, setTodos] = useState(todoData);
 
-  console.log(todos);
-
   return (
     <>
       <h1>My Todo List</h1>
-      {todos.map((todo) => {
-        return <p key={todo.id}>{todo.title}</p>;
-      })}
+      <Todos todos={todos} />
     </>
   );
 }
