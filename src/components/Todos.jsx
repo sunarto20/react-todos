@@ -4,8 +4,6 @@ import TodoItem from "./TodoItem";
 
 // eslint-disable-next-line react/prop-types
 function Todos({ todos }) {
-  console.log(todos);
-
   return (
     <div style={style.container}>
       {todos.map((todo) => {
