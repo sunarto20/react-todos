@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Todos from "./components/Todos";
+import TodoForm from "./components/TodoForm";
 
 const todoData = [
   {
@@ -42,9 +43,24 @@ export default function App() {
     setTodos(update);
   };
 
+  const addTodo = (title) => {
+    if (title === "") {
+      return;
+    }
+
+    const newTodo = {
+      id: todos.length + 1,
+      title: title,
+      completed: false,
+    };
+
+    setTodos(todos.concat(newTodo));
+  };
+
   return (
     <div style={style.container}>
       <h1 style={style.title}>My Todo List</h1>
+      <TodoForm addTodo={addTodo} />
       <Todos
         todos={todos}
         toggleCompleted={toggleCompleted}
