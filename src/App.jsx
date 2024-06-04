@@ -34,10 +34,22 @@ export default function App() {
     setTodos(update);
   };
 
+  const deleteTodo = (id) => {
+    const update = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+
+    setTodos(update);
+  };
+
   return (
     <div style={style.container}>
       <h1 style={style.title}>My Todo List</h1>
-      <Todos todos={todos} toggleCompleted={toggleCompleted} />
+      <Todos
+        todos={todos}
+        toggleCompleted={toggleCompleted}
+        deleteTodo={deleteTodo}
+      />
     </div>
   );
 }
