@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { createContext, useState } from "react";
+
+// import "./App.css";
+import TodosData from "./data/todos";
+import Todos from "./components/Todos";
+import TodoForm from "./components/TodoForm";
+
+export const TodoContext = createContext();
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState(TodosData);
+
+  const toggleCompleted = (id) => {
+    const update = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+
+      return todo;
+    });
+
+    setTodos(update);
+  };
+
+  const deleteTodo = (id) => {
+    const update = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+
+    setTodos(update);
+  };
+
+  const addTodo = (title) => {
+    if (title === "") return;
+
+    const newTodo = {
+      id: todos.length + 1,
+      title: title,
+      completed: false,
+    };
+
+    setTodos(todos.concat(newTodo));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <TodoContext.Provider value={{ toggleCompleted, deleteTodo }}>
+      <div style={style.container}>
+        <h1 style={style.fontSize}>My Todo List</h1>
+        <TodoForm addTodo={addTodo} />
+        <Todos todos={todos} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </TodoContext.Provider>
+  );
 }
 
-export default App
+const style = {
+  container: {
+    textAlign: "center",
+    padding: "12px",
+  },
+  title: {
+    fontSize: "36px",
+  },
+};
+
+export default App;
