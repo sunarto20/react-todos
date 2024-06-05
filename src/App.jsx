@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import Todos from "./components/Todos";
 import TodoForm from "./components/TodoForm";
 
@@ -19,6 +19,8 @@ const todoData = [
     completed: false,
   },
 ];
+
+export const TodoContext = createContext();
 
 export default function App() {
   const [todos, setTodos] = useState(todoData);
@@ -58,15 +60,13 @@ export default function App() {
   };
 
   return (
-    <div style={style.container}>
-      <h1 style={style.title}>My Todo List</h1>
-      <TodoForm addTodo={addTodo} />
-      <Todos
-        todos={todos}
-        toggleCompleted={toggleCompleted}
-        deleteTodo={deleteTodo}
-      />
-    </div>
+    <TodoContext.Provider value={{ toggleCompleted, deleteTodo }}>
+      <div style={style.container}>
+        <h1 style={style.title}>My Todo List</h1>
+        <TodoForm addTodo={addTodo} />
+        <Todos todos={todos} />
+      </div>
+    </TodoContext.Provider>
   );
 }
 
